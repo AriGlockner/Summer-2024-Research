@@ -312,7 +312,7 @@ GameObject:
   - component: {fileID: 130516683}
   - component: {fileID: 130516682}
   - component: {fileID: 130516681}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Right Image Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -683,7 +683,7 @@ GameObject:
   - component: {fileID: 581689946}
   - component: {fileID: 581689945}
   - component: {fileID: 581689944}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left Image Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1128,7 +1128,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1048745748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1857,10 +1857,10 @@ CanvasRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 3639975}
   - {fileID: 705507995}
   - {fileID: 1356494888}
   - {fileID: 1048745751}
   - {fileID: 581689947}
   - {fileID: 130516684}
   - {fileID: 850643606}
-  - {fileID: 3639975}
