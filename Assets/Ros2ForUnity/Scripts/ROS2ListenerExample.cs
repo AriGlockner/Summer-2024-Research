@@ -23,10 +23,14 @@ namespace ROS2
 /// </summary>
 public class ROS2ListenerExample : MonoBehaviour
 {
-        public string topicName = "/chatter";
+    public string topicName = "/chatter";
     private ROS2UnityComponent ros2Unity;
     private ROS2Node ros2Node;
-    private ISubscription<std_msgs.msg.String> chatter_sub;
+    private ISubscription<std_msgs.msg.String> string_sub;
+    private ISubscription<std_msgs.msg.Bool> bool_sub;
+    private ISubscription<std_msgs.msg.Float32> float_sub;
+    private ISubscription<geometry_msgs.msg.Point> point_sub;
+    private ISubscription<diagnostic_msgs.msg.KeyValue> key_value_sub;
 
     void Start()
     {
@@ -39,8 +43,16 @@ public class ROS2ListenerExample : MonoBehaviour
         if (ros2Node == null && ros2Unity.Ok())
         {
             ros2Node = ros2Unity.CreateNode("ROS2UnityListenerNode");
-            chatter_sub = ros2Node.CreateSubscription<std_msgs.msg.String>(
-              topicName, msg => Debug.Log("Unity listener heard: [" + msg.Data + "]"));
+            string_sub = ros2Node.CreateSubscription<std_msgs.msg.String>(
+              "string", msg => Debug.Log("Unity listener heard: [" + msg.Data + "]"));
+                bool_sub = ros2Node.CreateSubscription<std_msgs.msg.Bool>(
+                  "bool", msg => Debug.Log("Unity listener heard: [" + msg.Data + "]"));
+                float_sub = ros2Node.CreateSubscription<std_msgs.msg.Float32>(
+              "float", msg => Debug.Log("Unity listener heard: [" + msg.Data + "]"));
+                point_sub = ros2Node.CreateSubscription<geometry_msgs.msg.Point>(
+              "point", msg => Debug.Log("Unity listener heard: [ x=" + msg.X + ", y=" + msg.Y + ", z=" + msg.Z + "]"));
+                key_value_sub = ros2Node.CreateSubscription<diagnostic_msgs.msg.KeyValue>(
+              "key_value", msg => Debug.Log("Unity listener heard: [ key=" + msg.Key + ", value=" + msg.Value + "]"));
                 Debug.Log("sub established");
         }
     }
