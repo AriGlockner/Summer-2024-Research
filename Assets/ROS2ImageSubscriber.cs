@@ -36,7 +36,7 @@ namespace ROS2
             // Subscribe the data from the incoming image
             if (ros2Node == null && ros2Unity.Ok())
             {
-                ros2Node = ros2Unity.CreateNode("ROS2UnityImageListenerNode");
+                ros2Node = ros2Unity.CreateNode("ROS2UnityImageListenerNode" + topic_Name);
                 image_sub = ros2Node.CreateSubscription<sensor_msgs.msg.Image>(
                     topic_Name, msg => {
                         if (msg.Data.Length > 0)
