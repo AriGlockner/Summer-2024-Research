@@ -12,7 +12,7 @@ namespace ROS2
         private ROS2UnityComponent ros2Unity;
         private ROS2Node ros2Node;
         private ISubscription<sensor_msgs.msg.Image> image_sub;
-        public String topic_name = "chatter";
+        public String topic_Name = "chatter";
         private Texture2D texture;
         public GameObject quad;
         private Renderer quadRenderer;
@@ -26,12 +26,11 @@ namespace ROS2
 
         void Update()
         {
-            Debug.Log(ros2Unity.Ok());
             if (ros2Node == null && ros2Unity.Ok())
             {
                 ros2Node = ros2Unity.CreateNode("ROS2UnityImageListenerNode");
                 image_sub = ros2Node.CreateSubscription<sensor_msgs.msg.Image>(
-                    topic_name, msg => ProcessImage(msg));
+                    topic_Name, msg => ProcessImage(msg));
             }
         }
 
