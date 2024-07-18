@@ -1,57 +1,80 @@
 using System;
 using UnityEngine;
 using ROS2;
+using System.Collections.Concurrent;
 
 namespace ROS2
 {
     /// <summary>
-    /// An example class for subscribing to image messages in ROS2
+    /// Subscribe image messages in ROS2
     /// </summary>
     public class ROS2ImageSubscriber : MonoBehaviour
     {
+        // ROS2 Connection components
         private ROS2UnityComponent ros2Unity;
         private ROS2Node ros2Node;
         private ISubscription<sensor_msgs.msg.Image> image_sub;
         public String topic_Name = "chatter";
+        
+        // Textures / Objects
         private Texture2D texture;
         public GameObject quad;
         private Renderer quadRenderer;
 
+        // Queue
+        private ConcurrentQueue<sensor_msgs.msg.Image> imageQueue = new ConcurrentQueue<sensor_msgs.msg.Image>();
+
+
         void Start()
         {
-            ros2Unity = GetComponent<ROS2UnityComponent>();
-            texture = new Texture2D(1, 1); // Initialize a texture
+            ros2Unity = GetComponent<ROS2UnityComponent>();            
             quadRenderer = quad.GetComponent<Renderer>();
         }
 
         void Update()
         {
+            // Subscribe the data from the incoming image
             if (ros2Node == null && ros2Unity.Ok())
             {
                 ros2Node = ros2Unity.CreateNode("ROS2UnityImageListenerNode");
                 image_sub = ros2Node.CreateSubscription<sensor_msgs.msg.Image>(
-                    topic_Name, msg => ProcessImage(msg));
+                    topic_Name, msg => {
+                        if (msg.Data.Length > 0)
+                            imageQueue.Enqueue(msg);
+                        else
+                            Debug.LogWarning("Recieved image message with empty data");
+                    });
             }
+
+            // Display the image onto the object
+            displayImage();
         }
 
-        private void ProcessImage(sensor_msgs.msg.Image msg)
+        void displayImage()
         {
-            if (msg.Data.Length > 0)
+            //texture = new Texture2D(640, 480, TextureFormat.RGBAHalf, false);
+
+            if (imageQueue.TryDequeue(out sensor_msgs.msg.Image msg))
             {
-                // Assuming the image is in RGB8 format
-                texture.LoadImage(msg.Data);
-                // Apply the texture to a GameObject's material, e.g., a Quad
-                //GameObject quad = GameObject.Find("ImageQuad");
-                if (quad != null)
+                // Create a new Texture if the size of the texture is not correct
+                int width = (int) msg.Width;
+                int height = (int) msg.Height;
+                if (texture == null || texture.width != width || texture.height != height)
+                    texture = new Texture2D(width, height, TextureFormat.RGB24, false);
+
+                // Create and apply the texture
+                Color32[] pixels = new Color32[width * height];
+                for (int i = 0; i < pixels.Length; i++)
                 {
-                    //Renderer renderer = quad.GetComponent<Renderer>();
-                    quadRenderer.material.mainTexture = texture;
+                    int idx = i * 3;
+                    pixels[i] = new Color32(msg.Data[idx], msg.Data[idx + 1], msg.Data[idx + 2], 255);
                 }
-                Debug.Log("Image received and applied to quad.");
-            }
-            else
-            {
-                Debug.LogWarning("Received image message with empty data.");
+
+                texture.SetPixels32(pixels);
+                texture.Apply();
+
+                // Set the quad to the texture
+                quadRenderer.material.mainTexture = texture;
             }
         }
     }
