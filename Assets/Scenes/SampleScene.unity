@@ -2017,7 +2017,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1048745748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2483,7 +2483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7acef0b79454c9b4dae3f8139bc4ba77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RosIPAddress: 172.20.104.197
+  m_RosIPAddress: 129.22.142.252
   m_RosPort: 10000
   m_ConnectOnStart: 1
   m_KeepaliveTime: 1
@@ -2505,7 +2505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b72bf9e407b0f4bcca255ec6a4f4d676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topicName: /image2
+  topicName: /sim_L_vision
   imageDisplay: {fileID: 30276932}
 --- !u!114 &1356494893
 MonoBehaviour:
@@ -2519,7 +2519,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b72bf9e407b0f4bcca255ec6a4f4d676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topicName: /image1
+  topicName: /sim_R_vision
   imageDisplay: {fileID: 1385253457}
 --- !u!114 &1356494894
 MonoBehaviour:
