@@ -8,12 +8,8 @@ namespace ROS2
     {
         private ROS2UnityComponent ros2Unity;
         private ROS2Node ros2Node;
-        //private IPublisher<geometry_msgs.msg.Vector3> position_pub;
-        //private IPublisher<geometry_msgs.msg.Quaternion> rotation_pub;
         private IPublisher<geometry_msgs.msg.Transform> transform_pub;
 
-        private int i;
-        public string cameraEye;
         public GameObject Camera;
         public Vector3 position;
         public Quaternion rotation;
@@ -32,38 +28,26 @@ namespace ROS2
             {
                 if (ros2Node == null)
                 {
-                    ros2Node = ros2Unity.CreateNode(cameraEye + "ROS2UnityTransformNode");
-                    //position_pub = ros2Node.CreatePublisher<geometry_msgs.msg.Vector3>("chatter/" + cameraEye + "/position");
-                    //rotation_pub = ros2Node.CreatePublisher<geometry_msgs.msg.Quaternion>("chatter/" + cameraEye + "/rotation");
-                    transform_pub = ros2Node.CreatePublisher<geometry_msgs.msg.Transform>("chatter/" + cameraEye + "/transform");
+                    ros2Node = ros2Unity.CreateNode("ROS2UnityHeadTransformNode");
+                    transform_pub = ros2Node.CreatePublisher<geometry_msgs.msg.Transform>("head_transform");
                 }
 
-                i++;
-                //std_msgs.msg.String msg = new std_msgs.msg.String();
-                //msg.Data = message + i;
-                //chatter_pub.Publish(msg);
-
-                
-                rotation = Camera.transform.rotation;
-
-                // Publish Position Data
+                // Set Position Data
                 geometry_msgs.msg.Vector3 pos = new geometry_msgs.msg.Vector3();
                 position = Camera.transform.position;
                 pos.X = position.x;
                 pos.Y = position.y;
                 pos.Z = position.z;
-                //position_pub.Publish(pos);
 
-                // Publish Position Data
+                // Set Rotation Data
                 geometry_msgs.msg.Quaternion rot = new geometry_msgs.msg.Quaternion();
                 rotation = Camera.transform.rotation;
                 rot.X = rotation.x;
                 rot.Y = rotation.y;
                 rot.Z = rotation.z;
                 rot.W = rotation.w;
-                //rotation_pub.Publish(rot);
 
-                // Transform Data
+                // Publish Transform Data
                 geometry_msgs.msg.Transform transform = new geometry_msgs.msg.Transform();
                 transform.Translation = pos;
                 transform.Rotation = rot;
