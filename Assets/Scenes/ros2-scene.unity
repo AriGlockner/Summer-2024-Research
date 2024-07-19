@@ -1359,6 +1359,8 @@ GameObject:
   - component: {fileID: 1873707287}
   - component: {fileID: 1873707289}
   - component: {fileID: 1873707290}
+  - component: {fileID: 1873707292}
+  - component: {fileID: 1873707293}
   m_Layer: 0
   m_Name: ROS2 Connection
   m_TagString: Untagged
@@ -1421,6 +1423,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   topic_Name: unity_sim_R_vision
   quad: {fileID: 1459165326}
+--- !u!114 &1873707292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1873707286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e3b3e5d99ff3a0429deaba739659bd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraEye: Left
+  Camera: {fileID: 786778943}
+  position: {x: 0, y: 0, z: 0}
+  rotation: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1873707293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1873707286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e3b3e5d99ff3a0429deaba739659bd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraEye: Right
+  Camera: {fileID: 371284039}
+  position: {x: 0, y: 0, z: 0}
+  rotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &2135020475
 GameObject:
   m_ObjectHideFlags: 0
