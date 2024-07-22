@@ -12,6 +12,7 @@ namespace ROS2
         private IPublisher<geometry_msgs.msg.Transform> transform_pub;
 
         // Unity Scene
+        public string channel = "chatter";
         public GameObject Camera;
         private Vector3 position;
         private Quaternion rotation;
@@ -20,8 +21,8 @@ namespace ROS2
         void Start()
         {
             ros2Unity = GetComponent<ROS2UnityComponent>();
-            ros2Node = ros2Unity.CreateNode("head_tracker");
-            transform_pub = ros2Node.CreatePublisher<geometry_msgs.msg.Transform>("head_tracker");
+            ros2Node = ros2Unity.CreateNode(channel);
+            transform_pub = ros2Node.CreatePublisher<geometry_msgs.msg.Transform>(channel);
         }
 
         // Update is called once per frame
