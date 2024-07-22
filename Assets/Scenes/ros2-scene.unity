@@ -10137,9 +10137,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a221edbaa64d19748a8bfc16d7f535c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  channel: chatter
-  leftController: {fileID: 644591094}
-  rightController: {fileID: 1237942652}
 --- !u!1 &1874465849
 GameObject:
   m_ObjectHideFlags: 0
