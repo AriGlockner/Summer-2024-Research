@@ -49,29 +49,8 @@ namespace ROS2
             
             if (ros2Unity.Ok())
             {
-                Debug.Log("# of devices in hand: " + rightHandDevices.Count);
-
                 PublishJoysticks(leftHandDevices.First(), left_joy_pub);
                 PublishJoysticks(rightHandDevices.First(), right_joy_pub);
-                /*
-            bool left = false;
-            foreach (var device in leftHandDevices)
-            {
-                if (left)
-                    PublishJoysticks(device, left_joy_pub);
-                else
-                    PublishJoysticks(device, right_joy_pub);
-
-                left = !left;
-            }
-                */
-
-                /*
-                foreach (var device in rightHandDevices)
-                {
-                    PublishJoysticks(device, right_joy_pub);
-                }
-                */
             }
         }
 
@@ -87,13 +66,14 @@ namespace ROS2
             List<float> axes = GetJoystickData(joystick);
             List<int> buttons = GetButtonData(joystick);
 
-            // Publish Joystick data
+            // Convert the data into a message
             sensor_msgs.msg.Joy joy_msg = new()
             {
                 Axes = axes.ToArray(),
                 Buttons = buttons.ToArray()
             };
-            //Debug.Log(joy_msg.ToString());
+
+            // Publish the message
             publisher.Publish(joy_msg);
         }
 
@@ -137,7 +117,6 @@ namespace ROS2
             if (device.TryGetFeatureValue(CommonUsages.primaryButton, out bool primary))
             {
                 buttons.Add(primary ? 1 : 0);
-                Debug.Log(primary);
             } else
             {
                 buttons.Add(0);
