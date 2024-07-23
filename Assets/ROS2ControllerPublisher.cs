@@ -1,9 +1,11 @@
+using Oculus.Interaction.Editor;
 using ROS2;
 using RosMessageTypes.Sensor;
 using RosMessageTypes.Std;
 using std_msgs.msg;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -20,21 +22,6 @@ namespace ROS2
         // Right Controller
         private IPublisher<sensor_msgs.msg.Joy> left_joy_pub;
         private IPublisher<sensor_msgs.msg.Joy> right_joy_pub;
-
-        /*
-        private IPublisher<sensor_msgs.msg.Joy> right_controller_joyPub;
-        private IPublisher<std_msgs.msg.Bool> right_controller_aButtonPub;
-        private IPublisher<std_msgs.msg.Bool> right_controller_bButtonPub;
-        private IPublisher<std_msgs.msg.Bool> right_controller_frontTriggerPub;
-        private IPublisher<std_msgs.msg.Bool> right_controller_backTriggerPub;
-
-        // Left Controller
-        private IPublisher<sensor_msgs.msg.Joy> left_controller_joyPub;
-        private IPublisher<std_msgs.msg.Bool> left_controller_xButtonPub;
-        private IPublisher<std_msgs.msg.Bool> left_controller_yButtonPub;
-        private IPublisher<std_msgs.msg.Bool> left_controller_frontTriggerPub;
-        private IPublisher<std_msgs.msg.Bool> left_controller_backTriggerPub;
-        */
 
         // Input Devices
         public List<InputDevice> leftHandDevices = new();
@@ -53,22 +40,6 @@ namespace ROS2
             // Initialize joystick publishers
             left_joy_pub = ros2Node.CreatePublisher<sensor_msgs.msg.Joy>(channel + "_left");
             right_joy_pub = ros2Node.CreatePublisher<sensor_msgs.msg.Joy>(channel + "_right");
-
-            /*
-            // Initialize right controller channels
-            right_controller_joyPub = ros2Node.CreatePublisher<sensor_msgs.msg.Joy>(channel + "/Right/joystick");
-            right_controller_aButtonPub = ros2Node.CreatePublisher<std_msgs.msg.Bool>(channel + "/Right/A");
-            right_controller_bButtonPub = ros2Node.CreatePublisher<std_msgs.msg.Bool>(channel + "/Right/B");
-            right_controller_frontTriggerPub = ros2Node.CreatePublisher<std_msgs.msg.Bool>(channel + "/Right/frontTrigger");
-            right_controller_backTriggerPub = ros2Node.CreatePublisher<std_msgs.msg.Bool>(channel + "/Right/backTrigger");
-
-            // Initialize left controller channels
-            left_controller_joyPub = ros2Node.CreatePublisher<sensor_msgs.msg.Joy>(channel + "/Left/joystick");
-            left_controller_xButtonPub = ros2Node.CreatePublisher<std_msgs.msg.Bool>(channel + "/Left/X");
-            left_controller_yButtonPub = ros2Node.CreatePublisher<std_msgs.msg.Bool>(channel + "/Left/Y");
-            left_controller_frontTriggerPub = ros2Node.CreatePublisher<std_msgs.msg.Bool>(channel + "/Left/frontTrigger");
-            left_controller_backTriggerPub = ros2Node.CreatePublisher<std_msgs.msg.Bool>(channel + "/Left/backTrigger");
-            */
         }
 
         // Update is called once per frame
@@ -79,15 +50,28 @@ namespace ROS2
             if (ros2Unity.Ok())
             {
                 Debug.Log("# of devices in hand: " + rightHandDevices.Count);
-                foreach (var device in leftHandDevices)
-                {
-                    PublishJoysticks(device, left_joy_pub);
-                }
 
+                PublishJoysticks(leftHandDevices.First(), left_joy_pub);
+                PublishJoysticks(rightHandDevices.First(), right_joy_pub);
+                /*
+            bool left = false;
+            foreach (var device in leftHandDevices)
+            {
+                if (left)
+                    PublishJoysticks(device, left_joy_pub);
+                else
+                    PublishJoysticks(device, right_joy_pub);
+
+                left = !left;
+            }
+                */
+
+                /*
                 foreach (var device in rightHandDevices)
                 {
                     PublishJoysticks(device, right_joy_pub);
                 }
+                */
             }
         }
 
@@ -189,64 +173,7 @@ namespace ROS2
                 buttons.Add(0);
             }
 
-            //Debug.Log("Buttons: " + buttons.ToString());
             return buttons;
         }
-
-
-        /*
-        void PublishJoysticks(InputDevice device, IPublisher<sensor_msgs.msg.Joy> pub)
-        {
-            Vector2 primary, secondary;
-
-            if (device.TryGetFeatureValue(CommonUsages.primary2DAxis, out primary)
-                && device.TryGetFeatureValue(CommonUsages.secondary2DAxis, out secondary))
-            {
-                sensor_msgs.msg.Joy joyMsg = new sensor_msgs.msg.Joy();
-                joyMsg.Axes = new float[] { primary.x, primary.y, secondary.x, secondary.y };
-                pub.Publish(joyMsg);
-            }
-        }
-
-        void PublishButtons(InputDevice device, IPublisher<std_msgs.msg.Bool> primary, IPublisher<std_msgs.msg.Bool> secondary,
-            IPublisher<std_msgs.msg.Bool> frontTrigger, IPublisher<std_msgs.msg.Bool> backTrigger)
-        {
-            // primary button
-            bool primaryButtonValue;
-            if (device.TryGetFeatureValue(CommonUsages.primaryButton, out primaryButtonValue))
-            {
-                std_msgs.msg.Bool btn = new std_msgs.msg.Bool();
-                btn.Data = primaryButtonValue;
-                primary.Publish(btn);                
-            }
-
-            // secondary button
-            bool secondaryButtonValue;
-            if (device.TryGetFeatureValue(CommonUsages.secondaryButton, out secondaryButtonValue))
-            {
-                std_msgs.msg.Bool btn = new std_msgs.msg.Bool();
-                btn.Data = secondaryButtonValue;
-                secondary.Publish(btn);
-            }
-
-            // front trigger button
-            bool frontTriggerValue;
-            if (device.TryGetFeatureValue(CommonUsages.triggerButton, out frontTriggerValue))
-            {
-                std_msgs.msg.Bool btn = new std_msgs.msg.Bool();
-                btn.Data = frontTriggerValue;
-                frontTrigger.Publish(btn);
-            }
-
-            // back trigger button
-            bool backTriggerValue;
-            if (device.TryGetFeatureValue(CommonUsages.gripButton, out backTriggerValue))
-            {
-                std_msgs.msg.Bool btn = new std_msgs.msg.Bool();
-                btn.Data = backTriggerValue;
-                backTrigger.Publish(btn);
-            }
-        }
-        */
     }
 }
