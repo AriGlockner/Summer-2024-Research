@@ -52,5 +52,21 @@ namespace ROS2
                 transform_pub.Publish(transform);
             }
         }
+
+        void OnApplicationQuit()
+        {
+            transform_pub?.Dispose();
+            Debug.Log("ROS2 publisher disposed");
+        }
+
+        void OnDisable()
+        {
+            if (transform_pub != null)
+            {
+                transform_pub.Dispose();
+                transform_pub = null;
+                Debug.Log("ROS2 publisher disposed");
+            }
+        }
     }
 }  // namespace ROS2
