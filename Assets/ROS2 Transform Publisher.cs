@@ -32,14 +32,14 @@ namespace ROS2
             {
                 // Get the Position Data
                 geometry_msgs.msg.Vector3 pos = new geometry_msgs.msg.Vector3();
-                position = Camera.transform.position;
+                position = Camera.transform.localPosition;
                 pos.X = position.x;
                 pos.Y = position.y;
                 pos.Z = position.z;
 
                 // Get the Rotation Data
                 geometry_msgs.msg.Quaternion rot = new geometry_msgs.msg.Quaternion();
-                rotation = Camera.transform.rotation;
+                rotation = Camera.transform.localRotation;
                 rot.X = rotation.x;
                 rot.Y = rotation.y;
                 rot.Z = rotation.z;
