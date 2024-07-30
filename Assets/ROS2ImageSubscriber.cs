@@ -77,5 +77,21 @@ namespace ROS2
                 quadRenderer.material.mainTexture = texture;
             }
         }
+
+        void OnApplicationQuit()
+        {
+            image_sub?.Dispose();
+            Debug.Log("ROS2 subscription disposed");
+        }
+
+        void OnDisable()
+        {
+            if (image_sub != null)
+            {
+                image_sub.Dispose();
+                image_sub = null;
+                Debug.Log("ROS2 subscription disposed");
+            }
+        }
     }
 }

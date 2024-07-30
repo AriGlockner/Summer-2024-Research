@@ -32,14 +32,14 @@ namespace ROS2
             {
                 // Get the Position Data
                 geometry_msgs.msg.Vector3 pos = new geometry_msgs.msg.Vector3();
-                position = Camera.transform.position;
+                position = Camera.transform.localPosition;
                 pos.X = position.x;
                 pos.Y = position.y;
                 pos.Z = position.z;
 
                 // Get the Rotation Data
                 geometry_msgs.msg.Quaternion rot = new geometry_msgs.msg.Quaternion();
-                rotation = Camera.transform.rotation;
+                rotation = Camera.transform.localRotation;
                 rot.X = rotation.x;
                 rot.Y = rotation.y;
                 rot.Z = rotation.z;
@@ -50,6 +50,22 @@ namespace ROS2
                 transform.Translation = pos;
                 transform.Rotation = rot;
                 transform_pub.Publish(transform);
+            }
+        }
+
+        void OnApplicationQuit()
+        {
+            transform_pub?.Dispose();
+            Debug.Log("ROS2 publisher disposed");
+        }
+
+        void OnDisable()
+        {
+            if (transform_pub != null)
+            {
+                transform_pub.Dispose();
+                transform_pub = null;
+                Debug.Log("ROS2 publisher disposed");
             }
         }
     }

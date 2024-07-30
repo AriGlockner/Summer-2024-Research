@@ -154,5 +154,29 @@ namespace ROS2
 
             return buttons;
         }
+
+        void OnApplicationQuit()
+        {
+            left_joy_pub?.Dispose();
+            right_joy_pub?.Dispose();
+            Debug.Log("ROS2 publisher disposed");
+        }
+
+        void OnDisable()
+        {
+            if (left_joy_pub != null)
+            {
+                left_joy_pub.Dispose();
+                left_joy_pub = null;
+                Debug.Log("ROS2 publisher disposed");
+            }
+
+            if (right_joy_pub != null)
+            {
+                right_joy_pub.Dispose();
+                right_joy_pub = null;
+                Debug.Log("ROS2 publisher disposed");
+            }
+        }
     }
 }
